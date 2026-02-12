@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#020305">
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://via.placeholder.com/192x192/f59e0b/000000?text=DB">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
     <title>JDP SUPREME - DONY BURGUERS</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -31,6 +32,34 @@
             overflow-x: hidden; 
         }
 
+        /* CARREGAMENTO SUPREME */
+        #loading-supreme {
+            position: fixed; inset: 0; background: var(--jdp-bg);
+            z-index: 9999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+        }
+
+        /* EFEITO DO CÍRCULO COLORIDO */
+        .spinner-supreme {
+            width: 50px;
+            height: 50px;
+            margin-top: 20px;
+            border: 5px solid transparent;
+            border-top: 5px solid #22c55e; /* Verde */
+            border-right: 5px solid #eab308; /* Amarelo */
+            border-bottom: 5px solid #3b82f6; /* Azul */
+            border-left: 5px solid #a855f7; /* Lilás */
+            border-radius: 50%;
+            animation: spin-supreme 1s linear infinite;
+        }
+
+        @keyframes spin-supreme {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 1; } }
+
         .nome-ouro-header {
             background: var(--jdp-gold-gradient);
             -webkit-background-clip: text;
@@ -39,49 +68,21 @@
             font-size: 14px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
-        }
-
-        .btn-reset-cliente {
-            position: fixed;
-            top: 80px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: rgba(255, 0, 0, 0.25);
-            font-size: 35px;
-            font-weight: bold;
-            z-index: 1500;
-        }
-
-        #surprise-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .resplendor-ouro {
-            font-size: 45px;
-            font-weight: 900;
-            text-align: center;
-            background: linear-gradient(to right, #bf953f 20%, #fcf6ba 40%, #ffffff 50%, #fcf6ba 60%, #bf953f 80%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine-gold 1.5s linear infinite;
-        }
-
-        @keyframes shine-gold { to { background-position: 200% center; } }
+            filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.3));
+         }
 
         .header-supreme {
             position: fixed; top: 0; left: 0; right: 0; height: 75px;
             background: var(--jdp-glass); backdrop-filter: blur(15px);
             border-bottom: 2px solid var(--jdp-gold); z-index: 1000;
             display: flex; justify-content: space-between; align-items: center; padding: 0 20px;
+        }
+
+        .resplendor-ouro {
+            font-size: 45px; font-weight: 900; text-align: center;
+            background: var(--jdp-gold-gradient);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5));
         }
 
         .grid-vendas { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
@@ -94,25 +95,31 @@
 
         .btn-finalizar { position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); width: 85%; background: var(--jdp-gold-gradient); color: #000; padding: 20px; border-radius: 12px; font-weight: 900; border: none; z-index: 1100; }
         
-        #modal-supreme { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 2000; padding: 20px; flex-direction: column; align-items: center; justify-content: center; }
+        #surprise-overlay { display: none; position: fixed; inset: 0; background: #000; z-index: 9999; flex-direction: column; align-items: center; justify-content: center; }
+        #modal-supreme { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 2000; flex-direction: column; align-items: center; justify-content: center; }
+        
         .comprovante-ouro { width: 100%; max-width: 340px; background: #0a0a0a var(--carbon); border: 2px solid var(--jdp-gold); padding: 25px; }
     </style>
 </head>
 <body>
 
-    <button class="btn-reset-cliente" onclick="limparErroCliente()">&times;</button>
+    <div id="loading-supreme">
+        <div class="resplendor-ouro" style="font-size: 24px;">DONY BURGUERS</div>
+        <div style="margin-top: 10px; color: var(--jdp-gold); font-size: 10px; letter-spacing: 2px; animation: pulse 1.5s infinite;">SINCRONIZANDO NAVE...</div>
+        <div class="spinner-supreme"></div>
+    </div>
 
     <div id="surprise-overlay">
         <div id="surprise-text" class="resplendor-ouro">DONY-BURGUERS</div>
     </div>
 
     <div class="header-supreme">
-        <div style="width:100px;"> <span class="nome-ouro-header">DONY BURGUERS</span> </div> 
-        <div>
+        <span class="nome-ouro-header">DONY BURGUERS</span>
+        <div style="text-align: center;">
             <div style="font-size:9px; color:var(--jdp-gold);">ITENS</div>
             <div id="mini-qtd" style="font-size:22px; font-weight:900;">00</div>
         </div>
-        <div style="text-align: right; width:100px;">
+        <div style="text-align: right;">
             <div style="font-size:9px; color:var(--jdp-gold);">TOTAL</div>
             <div id="mini-total" style="font-size:22px; font-weight:900; color:var(--jdp-gold);">R$ 0,00</div>
         </div>
@@ -120,23 +127,29 @@
 
     <div class="grid-vendas" id="vitrine"></div>
 
-    <button class="btn-finalizar" onclick="gerarConfirmacao()">CONFIRMAR PEDIDO</button>
+    <button class="btn-finalizar" onclick="gerarConfirmacao()">
+        <i class="fas fa-check-circle"></i> CONFIRMAR PEDIDO
+    </button>
 
     <div id="modal-supreme">
         <div class="comprovante-ouro" id="print-area">
-            <h2 style="text-align:center; color:var(--jdp-gold);">DONY BURGUERS</h2>
+            <h2 style="color:var(--jdp-gold); text-align:center;">DONY BURGUERS</h2>
             <div id="comp-itens-list"></div>
-            <div style="margin-top:15px; border:1px solid var(--jdp-gold); display:flex; justify-content:space-between; padding:10px;">
-                <span>TOTAL</span> <span id="comp-total"></span>
+            <hr style="border:1px solid var(--jdp-gold)">
+            <div style="display:flex; justify-content:space-between; color:var(--jdp-gold); font-weight:900;">
+                <span>TOTAL</span>
+                <span id="comp-total"></span>
             </div>
-            <div id="txt-evangelico" style="margin-top:10px; font-size:10px; color:#bf953f; text-align:center;"></div>
+            <div style="text-align:center; margin-top:20px;">
+                <img id="img-motor-comprovante" src="" style="width:70px; height:70px;">
+                <div id="txt-evangelico" style="font-size:10px; color:#bf953f; margin-top:10px;"></div>
+            </div>
         </div>
-        <button style="width:100%; background:#25D366; color:#fff; padding:15px; margin-top:10px; border:none; font-weight:900;" onclick="ativarProtocoloOuro()">ENVIAR WHATSAPP</button>
-        <button onclick="fecharModal()" style="color:#555; background:none; border:none; margin-top:10px;">CANCELAR</button>
+        <button onclick="ativarProtocoloOuro()" style="width:340px; background:#25D366; color:#fff; padding:15px; border:none; margin-top:10px; font-weight:900;">ENVIAR WHATSAPP</button>
+        <button onclick="fecharModal()" style="background:none; color:#555; border:none; margin-top:10px;">CANCELAR</button>
     </div>
 
     <script>
-        // Configuração do Firebase (Mantenha a sua original aqui)
         const firebaseConfig = {
             apiKey: "AIzaSyCEdXF7ScnMYz0Ce0OW-B_UJ8Bm5Pl9m8o",
             authDomain: "dony-burguers.firebaseapp.com",
@@ -146,26 +159,31 @@
             messagingSenderId: "511509845142",
             appId: "1:511509845142:web:9b0254a09ad8051e039eb7"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         let carrinho = [];
         let produtosGlobais = [];
+        let audioSurpresaUrl = "";
+        const frases = ["O SENHOR É MEU PASTOR.", "TUDO POSSO EM DEUS.", "DEUS É FIEL."];
 
         window.onload = () => {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').then(() => console.log("Nave pronta!"));
+            }
+
             db.ref('cardapio_supreme').on('value', snap => {
                 const data = snap.val();
                 produtosGlobais = data ? Object.entries(data).map(([id, val]) => ({id, ...val})) : [];
                 renderizar();
+                // O loading some após carregar os dados
+                setTimeout(() => {
+                    document.getElementById('loading-supreme').style.display = 'none';
+                }, 1000); 
             });
-            
-            // REGISTRO DO SERVICE WORKER
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js')
-                .then(() => console.log("Service Worker Ativo"))
-                .catch(err => console.log("Erro SW:", err));
-            }
+
+            db.ref('config_motor_recibo').on('value', snap => { document.getElementById('img-motor-comprovante').src = snap.val() || ""; });
+            db.ref('config_audio_surpresa').on('value', snap => { audioSurpresaUrl = snap.val() || ""; });
         };
 
         function renderizar() {
@@ -183,7 +201,7 @@
                         ${qtd > 0 ? `<div class="badge-qtd">${qtd}</div>` : ''}
                         <img src="${p.link}">
                         <div style="padding:10px; text-align:center;">
-                            <div style="font-size:11px;">${p.nome}</div>
+                            <div style="font-size:11px; color:#888">${p.nome}</div>
                             <div style="font-weight:900">R$ ${parseFloat(p.preco).toFixed(2)}</div>
                         </div>
                     </div>
@@ -199,13 +217,13 @@
         }
 
         function gerarConfirmacao() {
-            if (carrinho.length === 0) return;
-            document.getElementById('txt-evangelico').innerText = "O SENHOR É MEU PASTOR.";
+            if (carrinho.length === 0) return alert("CARRINHO VAZIO");
+            document.getElementById('txt-evangelico').innerText = frases[Math.floor(Math.random() * frases.length)];
             const list = document.getElementById('comp-itens-list');
             let total = 0;
             list.innerHTML = carrinho.map(i => {
                 total += (i.qtd * i.preco);
-                return `<div style="display:flex; justify-content:space-between; font-size:13px;"><span>${i.qtd}x ${i.nome}</span><span>R$ ${(i.qtd*i.preco).toFixed(2)}</span></div>`;
+                return `<div style="display:flex; justify-content:space-between; color:#fff; font-size:13px; margin-bottom:5px;"><span>${i.qtd}x ${i.nome}</span><span>R$ ${(i.qtd*i.preco).toFixed(2)}</span></div>`;
             }).join('');
             document.getElementById('comp-total').innerText = `R$ ${total.toFixed(2)}`;
             document.getElementById('modal-supreme').style.display = 'flex';
@@ -214,16 +232,26 @@
         async function ativarProtocoloOuro() {
             const overlay = document.getElementById('surprise-overlay');
             overlay.style.display = 'flex';
-            setTimeout(() => { 
-                overlay.style.display = 'none'; 
-                let msg = `*PEDIDO DONY BURGUERS*\n`;
-                carrinho.forEach(i => { msg += `✅ ${i.qtd}x ${i.nome}\n`; });
-                window.location.href = `https://wa.me/5592984846058?text=${encodeURIComponent(msg)}`;
-            }, 2000);
+            if (navigator.vibrate) navigator.vibrate([400, 100, 400]);
+            if (audioSurpresaUrl) { new Audio(audioSurpresaUrl).play(); }
+            setTimeout(() => { overlay.style.display = 'none'; processarSaida(); }, 3000);
+        }
+
+        async function processarSaida() {
+            const alvo = document.getElementById('print-area');
+            const canvas = await html2canvas(alvo, { backgroundColor: "#000" });
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL("image/png");
+            link.download = `DONY_PEDIDO.png`;
+            link.click();
+            let msg = `*🔥 NOVO PEDIDO - DONY BURGUERS*\n\n`;
+            carrinho.forEach(i => { msg += `✅ ${i.qtd}x ${i.nome}\n`; });
+            msg += `\n*TOTAL: R$ ${document.getElementById('comp-total').innerText}*`;
+            window.location.href = `https://wa.me/5592984846058?text=${encodeURIComponent(msg)}`;
         }
 
         function fecharModal() { document.getElementById('modal-supreme').style.display = 'none'; }
-        function limparErroCliente() { carrinho = []; renderizar(); }
     </script>
 </body>
 </html>
+
