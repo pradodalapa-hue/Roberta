@@ -1,1 +1,100 @@
-em manutenção 
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JDP SUPREME - ENGENHARIA</title>
+
+    <style>
+        body {
+            background-color: #000000;
+            color: #FFD700;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .container {
+            border: 2px solid #FFD700;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px #FFD700;
+            max-width: 80%;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .data-display {
+            font-size: 1.5em;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+    </style>
+
+    <script type="module">
+        // Importando as ferramentas do Google
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        // COORDENADAS: O senhor substitui o link abaixo pelo seu link do Firebase
+        const firebaseConfig = {
+            databaseURL: "SOU_O_ESPELHO_COLOQUE_A_URL_AQUI"
+        };
+
+        // Ativando o sinal
+        try {
+            const app = initializeApp(firebaseConfig);
+            const db = getDatabase(app);
+
+            // APONTANDO PARA A PASTA 'OURO' NO FIREBASE
+            const caminho = ref(db, 'tecnologia/dados');
+
+            // REFLETINDO OS DADOS NA TELA
+            onValue(caminho, (snapshot) => {
+                const dado = snapshot.val();
+                if (dado) {
+                    document.getElementById('display').innerText = dado;
+                } else {
+                    document.getElementById('display').innerText = "AGUARDANDO SINAL...";
+                }
+            });
+        } catch (error) {
+            console.log("Erro de conexão: Verifique as coordenadas no cabeçote.");
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>JDP SUPREME</h1>
+        <p>TECNOLOGIA DE ESPELHAMENTO EM TEMPO REAL</p>
+        
+        <div id="display" class="data-display">
+            CONECTANDO AO COFRE...
+        </div>
+
+        <footer>
+            PROJETADO PELO ENGENHEIRO JOSÉ DIVINO PRADO DA LAPA
+        </footer>
+    </div>
+
+</body>
+</html>
